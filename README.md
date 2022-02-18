@@ -85,15 +85,16 @@ To run locally, you will need a few things:
 
 Note: these have only been tested on a Mac running OS 12.2.1.  YMMV.  Much of what you will need to do will be similar to what's in `.gitpod.Dockerfile`
 
-1.  Install [GraphViz](https://www.graphviz.org/)
-1. `pyenv install 3.9.7`
-1. `pip install` all of the libraries you see in `.gitpod.Dockerfile`
-1. Setup your weekly python environments per the "Weekly Project" above.
-1. Install [Logstash with the OpenSearch Plugin](https://opensearch.org/docs/latest/clients/logstash/index/)
-1. Install [Fasttext](https://fasttext.cc/)  
-1. Run OpenSearch: 
-    1. `cd docker`
-    1. `docker-compose up`
-1. Note: most of the scripts and projects assume the data is in `/workspace/datasets`, but have overrides to specify your own directories. You will need to download and plan accordingly.  
-1. Do your work per the Weekly Project     
+1. Create a simbolic link from your project directory to workspace: ln -s /your-project-directory/  /workspace/
+2. Install [GraphViz](https://www.graphviz.org/)
+3. `pyenv install 3.9.7`
+4. `pip install` all of the libraries you see in `.gitpod.Dockerfile`
+5. Setup your weekly python environments per the "Weekly Project" above.
+6. Install [Logstash with the OpenSearch Plugin](https://opensearch.org/docs/latest/clients/logstash/index/)
+7. Install [Fasttext](https://fasttext.cc/)
+8. Run OpenSearch:
+   1. `cd docker`
+   1. `docker-compose up`
+9. Note: most of the scripts and projects assume the data is in `/workspace/datasets`, but have overrides to specify your own directories. You will need to download and plan accordingly.
+10. Do your work per the Weekly Project     
     
