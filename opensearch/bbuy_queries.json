@@ -25,9 +25,6 @@
       "category" : {
         "type" : "keyword"
       },
-      "click_time" : {
-        "type" : "date"
-      },
       "query" : {
         "type" : "text",
         "analyzer": "english_stemmer",
@@ -38,14 +35,17 @@
           }
         }
       },
-      "query_time" : {
-        "type" : "date"
-      },
       "sku" : {
         "type" : "keyword"
       },
       "user" : {
         "type" : "keyword"
+      },
+      "click_time" : {
+        "type" : "date"
+      },
+      "query_time" : {
+        "type" : "date"
       }
     }
   }
