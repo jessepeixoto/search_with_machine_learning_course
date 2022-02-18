@@ -27,6 +27,11 @@ do
 done
 shift $((OPTIND -1))
 
+echo "Kill previous logstash running instance"
+kill -9 $(pgrep -f 'logstash')
+
+echo "Deleting indices"
+curl -k -X DELETE -u admin  "https://localhost:9200/bb*" -H 'Content-Type: application/json'
 
 echo "Creating index settings and mappings"
 echo " Product file: $PRODUCTS_JSON_FILE"
