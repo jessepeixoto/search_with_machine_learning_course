@@ -1,6 +1,58 @@
 {
   "settings": {
     "index.refresh_interval": "5s",
-    "number_of_replicas": 0
+    "number_of_replicas": 0,
+    "analysis": {
+      "analyzer": {
+        "english_stemmer": {
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "stemmer"
+          ]
+        }
+      },
+      "filter": {
+        "stemmer": {
+          "type": "stemmer",
+          "language": "light_english"
+        }
+      }
+    }
+  },
+  "mappings": {
+    "dynamic": "false",
+    "properties": {
+      "active": {
+        "type": "boolean"
+      },
+      "name": {
+        "type": "text",
+        "analyzer": "english_stemmer",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "shortDescription": {
+        "type": "text",
+        "analyzer": "english_stemmer",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "longDescription": {
+        "type": "text",
+        "analyzer": "english_stemmer"
+      },
+      "regularPrice": {
+        "type": "float"
+      }
+    }
   }
 }
