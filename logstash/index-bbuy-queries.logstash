@@ -15,11 +15,11 @@ filter {
     skip_header => true
   }
   date {
-    match => [ "click_time", "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm:ss.SS" ]
+    match => [ "click_time", "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm:ss.SS", "yyyy-MM-dd HH:mm:ss.SSS" ]
     target => "click_time"
   }
   date {
-    match => [ "query_time", "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm:ss.SS" ]
+    match => [ "query_time", "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm:ss.SS", "yyyy-MM-dd HH:mm:ss.SSS" ]
     target => "query_time"
   }
   mutate {
