@@ -1,6 +1,52 @@
 {
   "settings": {
     "index.refresh_interval": "5s",
-    "number_of_replicas": 0
+    "number_of_replicas": 0,
+    "analysis": {
+      "analyzer": {
+        "english_stemmer": {
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "stemmer"
+          ]
+        }
+      },
+      "filter": {
+        "stemmer": {
+          "type": "stemmer",
+          "language": "light_english"
+        }
+      }
+    }
+  },
+  "mappings" : {
+    "properties" : {
+      "category" : {
+        "type" : "keyword"
+      },
+      "click_time" : {
+        "type" : "date"
+      },
+      "query" : {
+        "type" : "text",
+        "analyzer": "english_stemmer",
+        "fields" : {
+          "keyword" : {
+            "type" : "keyword",
+            "ignore_above" : 256
+          }
+        }
+      },
+      "query_time" : {
+        "type" : "date"
+      },
+      "sku" : {
+        "type" : "keyword"
+      },
+      "user" : {
+        "type" : "keyword"
+      }
+    }
   }
 }
