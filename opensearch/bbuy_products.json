@@ -50,7 +50,13 @@
         "type": "text",
         "analyzer": "customAnalyzer",
         "similarity": "disabledTF",
-        "copy_to": "catchAll"
+        "copy_to": "catchAll",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
       },
       "nameSentinel": {
         "type": "text",
@@ -86,6 +92,18 @@
         "analyzer": "customAnalyzer"
       },
       "productId": {
+        "type": "keyword"
+      },
+      "salesRankShortTerm": {
+        "type": "integer"
+      },
+      "salesRankMediumTerm": {
+        "type": "integer"
+      },
+      "salesRankLongTerm": {
+        "type": "integer"
+      },
+      "image": {
         "type": "keyword"
       }
     }
