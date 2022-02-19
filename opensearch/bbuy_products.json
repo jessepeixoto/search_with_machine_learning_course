@@ -2,13 +2,33 @@
   "settings": {
     "index.refresh_interval": "5s",
     "number_of_replicas": 0,
+    "index": {
+      "similarity": {
+        "disabledTF": {
+          "type": "BM25",
+          "b": "1.0",
+          "k1": "0.0"
+        }
+      }
+    },
     "analysis": {
       "analyzer": {
-        "english_stemmer": {
+        "customAnalyzer": {
           "tokenizer": "standard",
           "filter": [
             "lowercase",
             "stemmer"
+          ],
+          "char_filter": [
+            "removeDash"
+          ]
+        }
+      },
+      "char_filter": {
+        "removeDash": {
+          "type": "mapping",
+          "mappings": [
+            "- => "
           ]
         }
       },
@@ -28,17 +48,29 @@
       },
       "name": {
         "type": "text",
-        "analyzer": "english_stemmer",
-        "fields": {
-          "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
-          }
-        }
+        "analyzer": "customAnalyzer",
+        "similarity": "disabledTF",
+        "copy_to": "catchAll"
+      },
+      "nameSentinel": {
+        "type": "text",
+        "analyzer": "customAnalyzer"
       },
       "shortDescription": {
         "type": "text",
-        "analyzer": "english_stemmer",
+        "analyzer": "customAnalyzer",
+        "copy_to": "catchAll"
+      },
+      "longDescription": {
+        "type": "text",
+        "analyzer": "customAnalyzer",
+        "copy_to": "catchAll"
+      },
+      "department": {
+        "type": "text",
+        "analyzer": "customAnalyzer",
+        "similarity": "disabledTF",
+        "copy_to": "catchAll",
         "fields": {
           "keyword": {
             "type": "keyword",
@@ -46,12 +78,15 @@
           }
         }
       },
-      "longDescription": {
-        "type": "text",
-        "analyzer": "english_stemmer"
-      },
       "regularPrice": {
         "type": "float"
+      },
+      "catchAll": {
+        "type": "text",
+        "analyzer": "customAnalyzer"
+      },
+      "productId": {
+        "type": "keyword"
       }
     }
   }
