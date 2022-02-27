@@ -1,0 +1,22 @@
+input {
+    elasticsearch {
+        hosts => "http://localhost:9201"
+        index => "bbuy_products_raw"
+    }
+}
+
+output {
+    opensearch {
+        hosts => ["https://localhost:9200"]
+        user => "admin"
+        password => "admin"
+        ssl_certificate_verification => false
+        index => "bbuy_products"
+        ecs_compatibility => "disabled"
+        manage_template => true
+        template_name => "bbuy_products_template"
+        template => "/workspace/search_with_machine_learning_course/logstash/week2/template/bbuy_products.json"
+        template_overwrite => true
+        document_id => "%{sku}"
+    }
+}

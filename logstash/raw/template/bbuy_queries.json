@@ -1,0 +1,13 @@
+{
+  "index_patterns": [
+    "bbuy_queries_raw"
+  ],
+  "template": "bbuy_queries_template",
+  "settings": {
+    "index.refresh_interval": "5s",
+    "number_of_replicas": 0
+  },
+  "mappings": {
+    "dynamic": "false"
+  }
+}

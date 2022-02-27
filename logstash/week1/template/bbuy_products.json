@@ -1,4 +1,6 @@
 {
+  "index_patterns": ["bbuy_products"],
+  "template": "bbuy_products_template",
   "settings": {
     "index.refresh_interval": "5s",
     "number_of_replicas": 0,

@@ -1,0 +1,5 @@
+#### CREATE RAW INDEX
+- pipeline.id: product_raw
+  path.config: "/workspace/search_with_machine_learning_course/logstash/raw/config/index-bbuy-products.logstash"
+- pipeline.id: queries_raw
+  path.config: "/workspace/search_with_machine_learning_course/logstash/raw/config/index-bbuy-queries.logstash"

@@ -94,11 +94,13 @@ filter {
 
 output {
     opensearch {
-        hosts => ["https://localhost:9200"]
-        index => "bbuy_products"
-        user => "admin"
-        password => "admin"
+        hosts => ["http://localhost:9201"]
+        index => "bbuy_products_raw"
+        ecs_compatibility => "disabled"
+        manage_template => true
+        template_name => "bbuy_products_template"
+        template => "/workspace/search_with_machine_learning_course/logstash/raw/template/bbuy_products.json"
+        template_overwrite => true
         document_id => "%{sku}"
-        ssl_certificate_verification => false
     }
 }

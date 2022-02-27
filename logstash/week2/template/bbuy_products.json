@@ -1,5 +1,9 @@
 {
+  "index_patterns": ["bbuy_products"],
+  "template": "bbuy_products_template",
   "settings": {
+    "number_of_replicas": 0,
+    "index.refresh_interval": "5s",
     "analysis": {
       "analyzer": {
         "smarter_hyphens": {
@@ -249,7 +253,6 @@
           "suggest": {
             "type": "completion"
           }
-
         }
       },
       "onSale": {

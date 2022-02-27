@@ -1,5 +1,8 @@
 {
+  "index_patterns": ["bbuy_queries"],
+  "template": "bbuy_queries_template",
   "settings": {
+    "number_of_replicas": 0,
     "index.refresh_interval": "5s"
   },
   "mappings": {

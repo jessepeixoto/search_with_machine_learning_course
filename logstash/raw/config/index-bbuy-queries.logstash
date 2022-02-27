@@ -11,7 +11,7 @@ input {
 
 filter {
     csv {
-        autodetect_column_names => true
+        columns => ["user", "sku", "category", "query", "click_time", "query_time"]
         skip_header => true
     }
 
@@ -32,10 +32,12 @@ filter {
 
 output {
     opensearch {
-        hosts => ["https://localhost:9200"]
-        index => "bbuy_queries"
-        user => "admin"
-        password => "admin"
-        ssl_certificate_verification => false
+        hosts => ["http://localhost:9201"]
+        index => "bbuy_queries_raw"
+        ecs_compatibility => "disabled"
+        manage_template => true
+        template_name => "bbuy_queries_template"
+        template => "/workspace/search_with_machine_learning_course/logstash/raw/template/bbuy_queries.json"
+        template_overwrite => true
     }
 }
