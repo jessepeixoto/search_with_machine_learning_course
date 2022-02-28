@@ -26,18 +26,16 @@
         }
       },
       {
-        "name": "name_hyphens_min_df",
+        "name": "sentinel_name_phrase_match",
         "params": [
           "keywords"
         ],
         "template_language": "mustache",
         "template": {
-          "match_explorer": {
-            "type": "min_raw_df",
-            "query": {
-              "match": {
-                "name.hyphens": "{{keywords}}"
-              }
+          "match_phrase": {
+            "nameSentinel": {
+              "query": "SENTINEL_BEGIN {{keywords}}",
+              "slop": 100
             }
           }
         }
@@ -77,6 +75,54 @@
             "query": {
               "match_all": {}
             }
+          }
+        }
+      },
+      {
+        "name": "salesRankLongTerm",
+        "template_language": "mustache",
+        "template": {
+          "function_score": {
+            "functions": [
+              {
+                "field_value_factor": {
+                  "field": "salesRankLongTerm",
+                  "missing": 1000000
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "name": "salesRankMediumTerm",
+        "template_language": "mustache",
+        "template": {
+          "function_score": {
+            "functions": [
+              {
+                "field_value_factor": {
+                  "field": "salesRankMediumTerm",
+                  "missing": 100000000
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "name": "salesRankShortTerm",
+        "template_language": "mustache",
+        "template": {
+          "function_score": {
+            "functions": [
+              {
+                "field_value_factor": {
+                  "field": "salesRankShortTerm",
+                  "missing": 100000000
+                }
+              }
+            ]
           }
         }
       }

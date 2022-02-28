@@ -49,11 +49,13 @@ if queriesRawCount == 0 or productsRawCount == 0:
     os.system('nohup {}/bin/logstash --path.settings {} &'.format(logstashHome, configRawDir))
 
 elif queriesRawCount == 1865269 and productsRawCount == 1275077:
-    print(''' - Deleting destination indices''')
-    opensearch.indices.delete(index=['bbuy_queries', 'bbuy_products'], ignore=[400, 404])
+    os.system('kill -9 $(pgrep -f \'logstash\')')
 
     print(''' - Deleting previous logstash logs''')
     os.system('rm -f /workspace/logs/*')
+
+    print(''' - Deleting destination indices''')
+    opensearch.indices.delete(index='bb*', ignore=[400, 404])
 
     print(''' - Running Logstash found in {} '''.format(logstashHome))
     print(''' - Rebuilding destination indices from raw''')
