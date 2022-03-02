@@ -131,3 +131,6 @@ dmypy.json
 # Pyre type checker
 .pyre/
 .idea/
+*.xml
+/fasttext_training_data/*
+model_*.*
