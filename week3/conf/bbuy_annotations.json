@@ -265,6 +265,10 @@
 
         }
       },
+      "name_synonyms": {
+        "type": "text",
+        "analyzer": "english"
+      },
       "onSale": {
         "type": "boolean"
       },

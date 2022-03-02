@@ -1,4 +1,4 @@
-# Project 1
+# Level 1
 
 Unzip xml files
 ```sh 
@@ -34,7 +34,7 @@ Test the model over all test data
 ../fastText-0.9.2/fasttext test /workspace/datasets/categories/your_model.bin /workspace/datasets/categories/data.test
 ```
 
-# Project 2
+# Level 2
 
 ```sh 
 python week3/extractTitles.py --sample_rate 0.2
@@ -55,3 +55,19 @@ whether your synonyms are getting better or worse.
 ../fastText-0.9.2/fasttext nn /workspace/datasets/fasttext/title_model.bin
 ```
 
+# Level 3
+
+Extract titles
+```sh
+python week3/extractTitles.py --input /workspace/search_with_machine_learning_course/week3/phone_products --sample_rate 1.0
+```
+
+Generate/train the model
+```sh 
+../fastText-0.9.2/fasttext skipgram -input /workspace/datasets/fasttext/titles.txt -output /workspace/datasets/fasttext/title_model -minCount 10 -epoch 25
+```
+
+Play with this using “fasttext nn” to decide the threshold you want to use for synonyms. You’ll probably want a value of at least 0.90.
+```sh 
+../fastText-0.9.2/fasttext nn /workspace/datasets/fasttext/title_model.bin
+```

@@ -20,11 +20,20 @@ def annotate():
         syns_model = current_app.config.get("syns_model", None) # see if we have a synonyms/analogies model
         # We have a map of fields to annotate.  Do POS, NER on each of them
         sku = the_doc["sku"]
-        for item in the_doc:
+        for item in the_doc.copy():
             the_text = the_doc[item]
             if the_text is not None and the_text.find("%{") == -1:
                 if item == "name":
                     if syns_model is not None:
-                        print("IMPLEMENT ME: call nearest_neighbors on your syn model and return it as `name_synonyms`")
+                        how_many_neighbors = 20
+                        neighbors = syns_model.get_nearest_neighbors(the_text, k=how_many_neighbors)
+
+                        threshold = 0.93
+                        synonyms = [n[1] for n in neighbors if n[0] > threshold]
+
+                        print("Synonyms of '%s': %s" % (the_text, synonyms))
+
+                        response["name_synonyms"] = synonyms
+
         return jsonify(response)
     abort(415)
