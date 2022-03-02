@@ -4,30 +4,39 @@ import xml.etree.ElementTree as ET
 import argparse
 from pathlib import Path
 
+import nltk
+
+nltk.download('punkt')
+
 directory = r'/workspace/search_with_machine_learning_course/data/pruned_products'
 parser = argparse.ArgumentParser(description='Process some integers.')
 general = parser.add_argument_group("general")
-general.add_argument("--input", default=directory,  help="The directory containing the products")
+general.add_argument("--input", default=directory, help="The directory containing the products")
 general.add_argument("--output", default="/workspace/datasets/fasttext/titles.txt", help="the file to output to")
 
 # Consuming all of the product data takes a while. But we still want to be able to obtain a representative sample.
-general.add_argument("--sample_rate", default=0.1, type=float, help="The rate at which to sample input (default is 0.1)")
+general.add_argument("--sample_rate", default=0.1, type=float,
+                     help="The rate at which to sample input (default is 0.1)")
 
 args = parser.parse_args()
 output_file = args.output
 path = Path(output_file)
 output_dir = path.parent
 if os.path.isdir(output_dir) == False:
-        os.mkdir(output_dir)
+    os.mkdir(output_dir)
 
 if args.input:
     directory = args.input
 
 sample_rate = args.sample_rate
 
+
 def transform_training_data(name):
-    # IMPLEMENT
+    tokens = nltk.word_tokenize(name)
+    tokens = [token.lower() for token in tokens]
+    name = ' '.join(tokens)
     return name.replace('\n', ' ')
+
 
 # Directory for product data
 

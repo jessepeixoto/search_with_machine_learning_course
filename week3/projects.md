@@ -33,3 +33,25 @@ Test the model over all test data
 ```sh 
 ../fastText-0.9.2/fasttext test /workspace/datasets/categories/your_model.bin /workspace/datasets/categories/data.test
 ```
+
+# Project 2
+
+```sh 
+python week3/extractTitles.py --sample_rate 0.2
+```
+
+Generate/train the model
+```sh 
+../fastText-0.9.2/fasttext skipgram -input /workspace/datasets/fasttext/titles.txt -output /workspace/datasets/fasttext/title_model -minCount 50
+```
+
+Test manually the results. Establish a set of 20 tokens that you’ll use for evaluation. 
+In order to get a good overall sense, you’ll want some variety: 
+e.g., 5 product types (e.g., headphones), 5 brands (e.g., sony), 5 models (e.g., thinkpad) and 5 attributes (e.g., black). 
+Remember that the catalog has a wide variety of consumer electronics (we’ve only removed music and movies), 
+so try to cover a bunch of ground! Your evaluation will be subjective, but you should still be able to see as you iterate
+whether your synonyms are getting better or worse.
+```sh 
+../fastText-0.9.2/fasttext nn /workspace/datasets/fasttext/title_model.bin
+```
+
