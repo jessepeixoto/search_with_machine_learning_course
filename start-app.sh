@@ -6,4 +6,5 @@ export SYNONYMS_MODEL_LOC=/workspace/datasets/fasttext/title_model.bin
 export FLASK_ENV=development
 export FLASK_APP=week3
 
-flask run
+flask run --port 3000
+# flask run --port 5000

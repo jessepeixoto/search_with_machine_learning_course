@@ -8,12 +8,20 @@ import nltk
 import pandas as pd
 
 nltk.download('punkt')
+nltk.download('stopwords')
+
+special_characters = ['!', '#', '$', '%', '&', '@', '[', ']', ']', '_', '-', '®', '?', ':', '(', ')', '™', '/',
+                      '\'', ',', '+']
 
 
 def transform_name(product_name):
     tokens = nltk.word_tokenize(product_name)
     tokens = [token.lower() for token in tokens]
+    tokens = [token for token in tokens if (token not in nltk.corpus.stopwords.words('english'))]
+    tokens = [nltk.stem.snowball.SnowballStemmer("english").stem(token) for token in tokens]
     product_name = ' '.join(tokens)
+    for special_character in special_characters:
+        product_name = product_name.replace(special_character, ' ')
     return product_name
 
 
