@@ -87,6 +87,9 @@ ipython_config.py
 # pyenv
 .python-version
 
+# Idea
+/.idea/
+
 # pipenv
 #   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
 #   However, in case of collaboration, if having platform-specific dependencies or dependencies
@@ -130,3 +133,11 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Data
+*.xml
+*.tar.gz
+*.ipynb
+
+# fasttext training data
+/fasttext_training_data/*
