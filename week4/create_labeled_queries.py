@@ -1,22 +1,29 @@
-import os
 import argparse
-import xml.etree.ElementTree as ET
-import pandas as pd
-import numpy as np
 import csv
+import os
+import sys
+import time
+import xml.etree.ElementTree as ET
 
-# Useful if you want to perform stemming.
-import nltk
-stemmer = nltk.stem.PorterStemmer()
+import pandas as pd
+
+dir_path = os.path.dirname(os.path.realpath(__file__))
+parent_dir_path = os.path.abspath(os.path.join(dir_path, os.pardir))
+sys.path.insert(0, parent_dir_path)
+
+from transform_data import transform_data
+from pandarallel import pandarallel
+
+start = time.time()
 
 categories_file_name = r'/workspace/datasets/product_data/categories/categories_0001_abcat0010000_to_pcmcat99300050000.xml'
 
 queries_file_name = r'/workspace/datasets/train.csv'
-output_file_name = r'/workspace/datasets/labeled_query_data.txt'
+output_file_name = r'/workspace/datasets/fasttext/labeled_query_data.txt'
 
 parser = argparse.ArgumentParser(description='Process arguments.')
 general = parser.add_argument_group("general")
-general.add_argument("--min_queries", default=1,  help="The minimum number of queries per category label (default is 1)")
+general.add_argument("--min_queries", default=1, help="The minimum number of queries per category label (default is 1)")
 general.add_argument("--output", default=output_file_name, help="the file to output to")
 
 args = parser.parse_args()
@@ -42,20 +49,49 @@ for child in root:
     if leaf_id != root_category_id:
         categories.append(leaf_id)
         parents.append(cat_path_ids[-2])
-parents_df = pd.DataFrame(list(zip(categories, parents)), columns =['category', 'parent'])
+categories_tree_df = pd.DataFrame(zip(categories, parents), columns=['category', 'category_parent'])
 
-# Read the training data into pandas, only keeping queries with non-root categories in our category tree.
-df = pd.read_csv(queries_file_name)[['category', 'query']]
-df = df[df['category'].isin(categories)]
+# read queries file and transform query
+pandarallel.initialize()
+queries_and_categories_df = pd.read_csv(queries_file_name)[['category', 'query']]
+queries_and_categories_df["query"] = queries_and_categories_df['query'].parallel_apply(transform_data)
 
-# IMPLEMENT ME: Convert queries to lowercase, and optionally implement other normalization, like stemming.
+queries_per_category_df = queries_and_categories_df.groupby(['category']).size().to_frame('total_queries')
 
-# IMPLEMENT ME: Roll up categories to ancestors to satisfy the minimum number of queries per category.
+total_queries_per_category_df = pd.merge(categories_tree_df, queries_per_category_df, on="category", how='left').fillna(0)
 
-# Create labels in fastText format.
-df['label'] = '__label__' + df['category']
+valid_categories = total_queries_per_category_df[(total_queries_per_category_df['total_queries'] > min_queries)].category.tolist()
+
+def get_ancestor_category(cat):
+    if cat in valid_categories:
+        return cat
+
+    while cat not in valid_categories:
+        parent_cat = categories_tree_df[(categories_tree_df['category'] == cat)].iloc[0]['category_parent']
+        cat = parent_cat
+        if cat == 'cat00000':
+            return None
+    return cat
+
+
+total_queries_per_category_df['valid_category'] = total_queries_per_category_df.category.parallel_apply(get_ancestor_category)
+
+total_queries_per_category_df['label'] = '__label__' + total_queries_per_category_df['valid_category']
+
+query_and_category_merged_df = pd.merge(queries_and_categories_df, total_queries_per_category_df, on="category")
+query_and_category_merged_df = query_and_category_merged_df[query_and_category_merged_df.valid_category.notnull()]
 
 # Output labeled query data as a space-separated file, making sure that every category is in the taxonomy.
-df = df[df['category'].isin(categories)]
-df['output'] = df['label'] + ' ' + df['query']
-df[['output']].to_csv(output_file_name, header=False, sep='|', escapechar='\\', quoting=csv.QUOTE_NONE, index=False)
+query_and_category_merged_df = query_and_category_merged_df[query_and_category_merged_df['category'].isin(categories)]
+query_and_category_merged_df['output'] = query_and_category_merged_df['label'] + ' ' + query_and_category_merged_df['query']
+
+end = time.time()
+print(end - start)
+
+# Export file
+query_and_category_merged_df[['output']].to_csv(output_file_name, header=False, sep='|', escapechar='\\', quoting=csv.QUOTE_NONE, index=False)
+
+end = time.time()
+print(end - start)
+
+print('Total of filtered categories: ', len(valid_categories))

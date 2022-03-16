@@ -3,6 +3,7 @@ import nltk
 special_characters = ['!', '#', '$', '%', '&', '@', '[', ']', ']', '_', '-', '®', '?', ':', '(', ')', '™', '/',
                       '\'', ',', '+']
 
+
 def transform_data(data):
     tokens = nltk.word_tokenize(data)
     tokens = [token.lower() for token in tokens]

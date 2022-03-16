@@ -1,5 +1,19 @@
 version: '3'
 services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.2
+    # Image with ICU plugin enabled
+    #image: adeo-docker-adeo-opus-release.jfrog.io/opus-search-elasticsearch-with-icu:7.6.1
+    environment:
+      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+      - discovery.type=single-node
+      - http.port=9201
+      - TAKE_FILE_OWNERSHIP=true
+    ports:
+      - 9201:9201
+    volumes:
+      - ../../data/elasticsearch:/usr/share/elasticsearch/data
+
   opensearch-node1:
     image: gsingers/opensearch-learning-to-rank:1.2.3
     container_name: opensearch-node1
@@ -15,7 +29,7 @@ services:
       - 9600:9600 # required for Performance Analyzer
     networks:
       - opensearch-net
-  
+
   opensearch-dashboards:
     image: opensearchproject/opensearch-dashboards:latest
     container_name: opensearch-dashboards
